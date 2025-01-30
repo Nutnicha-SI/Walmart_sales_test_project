@@ -213,6 +213,79 @@ WHERE r22.revenue > r23.revenue
 ORDER BY revenue_decline_percentage DESC
 LIMIT 5;
 ```
+##### Graph Visualization from SQL By using Mathplotlib
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+from sqlalchemy import create_engine
+
+engine = create_engine('postgresql+psycopg2://postgres:x0000@localhost:5432/walmart_db')
+
+query = """
+WITH revenue_2022 AS (
+    SELECT
+        branch,
+        SUM(total) AS revenue
+    FROM walmart
+    WHERE EXTRACT(YEAR FROM TO_DATE(date, 'DD/MM/YY')) = 2022
+    GROUP BY branch
+),
+revenue_2023 AS (
+    SELECT
+        branch,
+        SUM(total) AS revenue
+    FROM walmart
+    WHERE EXTRACT(YEAR FROM TO_DATE(date, 'DD/MM/YY')) = 2023
+    GROUP BY branch
+)
+
+SELECT 
+    r22.branch,
+    r22.revenue AS last_year_revenue,
+    r23.revenue AS current_year_revenue,
+    ROUND(
+        (r22.revenue - r23.revenue)::NUMERIC / r22.revenue::NUMERIC * 100,
+        2
+    ) AS revenue_decline_percentage
+FROM revenue_2022 r22
+JOIN revenue_2023 r23 
+ON r22.branch = r23.branch
+WHERE r22.revenue > r23.revenue
+ORDER BY revenue_decline_percentage DESC
+"""
+
+df = pd.read_sql(query, engine)
+
+print(df.head())
+```
+```
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.bar(df['branch'], df['revenue_decline_percentage'], color='Deepskyblue')
+
+ax.set_xlabel('Branch')
+ax.set_ylabel('Revenue Decline Percentage (%)')
+ax.set_title('Revenue Decline Percentage by Branch (2022 vs 2023)')
+ax.set_xticklabels(df['branch'], rotation=45, ha='right')
+fig, ax = plt.subplots(figsize=(10, 6))
+
+bar_width = 0.35
+index = range(len(df))
+
+bar1 = ax.bar(index, df['last_year_revenue'], bar_width, label='2022 Revenue', color='Mediumblue')
+bar2 = ax.bar([i + bar_width for i in index], df['current_year_revenue'], bar_width, label='2023 Revenue', color='Lightskyblue')
+
+ax.set_xlabel('Branch')
+ax.set_ylabel('Revenue')
+ax.set_title('Revenue Comparison Between 2022 and 2023 by Branch')
+ax.set_xticks([i + bar_width / 2 for i in index])
+ax.set_xticklabels(df['branch'], rotation=45, ha='right')
+
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
 ### 10. Project Publishing and Documentation
    - **Documentation**: Maintain well-structured documentation of the entire process in Markdown or a Jupyter Notebook.
    - **Project Publishing**: Publish the completed project on GitHub or any other version control platform, including:
