@@ -61,7 +61,8 @@ This project is an end-to-end data analysis solution designed to extract critica
      - Analyzing peak sales periods and customer buying patterns.
      - Profit margin analysis by branch and category.
    - **Documentation**: Keep clear notes of each query's objective, approach, and results.
-# SQL Queries for Walmart Sales Data Analysis
+     
+## SQL Queries for Walmart Sales Data Analysis
 
 This document contains SQL queries used to analyze the Walmart sales dataset. The queries are designed to answer key business questions regarding transactions, sales trends, and product performance.
 
@@ -73,7 +74,7 @@ SELECT
    COUNT(*) AS no_payments,
    SUM(quantity) AS no_qty_sold
 FROM walmart 
-GROUP BY payment_method;
+GROUP BY payment_method; ```
 
 #### Q2: Identify the highest-rated category in each branch, displaying the branch, category, and AVG rating
 ``` sql
