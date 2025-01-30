@@ -74,7 +74,8 @@ SELECT
    COUNT(*) AS no_payments,
    SUM(quantity) AS no_qty_sold
 FROM walmart 
-GROUP BY payment_method; ```
+GROUP BY payment_method;
+```
 
 #### Q2: Identify the highest-rated category in each branch, displaying the branch, category, and AVG rating
 ``` sql
@@ -90,6 +91,7 @@ FROM
   GROUP BY branch, category 
 ) AS ranked_data 
 WHERE rank = 1;
+```
 
 #### Q3: Identify the busiest day for each branch based on the number of transactions
 ```
@@ -110,6 +112,7 @@ FROM
 	GROUP BY 1,2
 	) AS ranked_data  
 WHERE rank = 1;
+```
 
 #### Q4: Calculate total quantity of items sold per payment method
 ```
@@ -119,7 +122,7 @@ SELECT
    SUM(quantity) AS no_qty_sold
 FROM walmart 
 GROUP BY payment_method;
-
+```
 #### Q5: Determine the avg, min, max rating of category for each city
 ```
 sql
@@ -131,7 +134,7 @@ SELECT
 	AVG(rating)  AS avg_rating
 FROM walmart
 GROUP BY 1,2;
-
+```
 #### Q6:Calculate the total profit for each category by considering total_profit as (unit_price * qty * profit_margin)
 ```
 sql
@@ -141,7 +144,7 @@ SELECT
 	SUM(total * profit_margin) AS total_profit
 FROM walmart
 GROUP BY 1;
-
+```
 #### Q7: Determine the most common payment method for each Branch. Display Branch and the preferred_payment_method.
 ```
 sql
@@ -158,7 +161,7 @@ WITH cte AS
 SELECT * 
 FROM cte
 WHERE rank = 1;
-
+```
 #### Q8 :Categorize sales into 3 groups: MORNING, AFTERNOON, EVENING
 ```
 sql
@@ -173,7 +176,7 @@ SELECT
 FROM walmart 
 GROUP BY 1,2
 ORDER BY 1,3 DESC;
-
+```
 #### Q9 :Identify the 5 branches with the highest decrease ratio in revenue compared to last year (2023 vs. 2022)
 ```
 sql
@@ -209,6 +212,7 @@ ON r22.branch = r23.branch
 WHERE r22.revenue > r23.revenue
 ORDER BY revenue_decline_percentage DESC
 LIMIT 5;
+```
 ### 10. Project Publishing and Documentation
    - **Documentation**: Maintain well-structured documentation of the entire process in Markdown or a Jupyter Notebook.
    - **Project Publishing**: Publish the completed project on GitHub or any other version control platform, including:
